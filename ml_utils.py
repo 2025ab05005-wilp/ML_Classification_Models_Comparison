@@ -92,7 +92,7 @@ def build_preprocessor(X: pd.DataFrame) -> ColumnTransformer:
 
 def build_models(num_classes: int) -> Dict[str, object]:
     return {
-        "Logistic Regression": LogisticRegression(max_iter=1000, n_jobs=1),
+        "Logistic Regression": LogisticRegression(max_iter=1000),
         "Decision Tree": DecisionTreeClassifier(random_state=RANDOM_STATE),
         "KNN": KNeighborsClassifier(n_neighbors=5),
         "Naive Bayes": GaussianNB(),

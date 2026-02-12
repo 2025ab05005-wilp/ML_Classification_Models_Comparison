@@ -2,6 +2,7 @@
 
 ## Problem statement
 Build and compare six classification models to predict obesity levels using the provided dataset, and present evaluation metrics in a Streamlit app.
+Dataset : https://archive.ics.uci.edu/dataset/544/estimation+of+obesity+levels+based+on+eating+habits+and+physical+condition
 
 ## Dataset description
 - Source: UCI Machine Learning Repository – Estimation of obesity levels based on eating habits and physical condition
