@@ -7,7 +7,7 @@ import plotly.express as px
 import plotly.figure_factory as ff
 from sklearn.model_selection import train_test_split
 
-from ml_utils import (
+from model.train_models import (
     DatasetSplit,
     MODEL_FILES,
     RANDOM_STATE,

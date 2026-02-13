@@ -14,12 +14,12 @@ Dataset : https://archive.ics.uci.edu/dataset/544/estimation+of+obesity+levels+b
 
 | ML Model Name | Accuracy | AUC | Precision | Recall | F1 | MCC |
 | --- | --- | --- | --- | --- | --- | --- |
-| Logistic Regression | 0.8747 | 0.9834 | 0.8707 | 0.8724 | 0.8708 | 0.8539 |
-| Decision Tree | 0.9149 | 0.9488 | 0.9157 | 0.9118 | 0.9133 | 0.9007 |
-| KNN | 0.8251 | 0.9650 | 0.8235 | 0.8187 | 0.8131 | 0.7981 |
-| Naive Bayes | 0.5083 | 0.8372 | 0.5207 | 0.5002 | 0.4511 | 0.4471 |
-| Random Forest (Ensemble) | 0.9433 | 0.9946 | 0.9461 | 0.9420 | 0.9430 | 0.9341 |
-| XGBoost (Ensemble) | 0.9598 | 0.9977 | 0.9600 | 0.9582 | 0.9587 | 0.9532 |
+| Logistic Regression | 0.8676 | 0.9814 | 0.8643 | 0.8653 | 0.8641 | 0.8456 |
+| Decision Tree | 0.9362 | 0.9623 | 0.9358 | 0.9351 | 0.9351 | 0.9256 |
+| KNN | 0.8322 | 0.9617 | 0.8270 | 0.8292 | 0.8150 | 0.8073 |
+| Naive Bayes | 0.5390 | 0.8469 | 0.5502 | 0.5372 | 0.4827 | 0.4861 |
+| Random Forest (Ensemble) | 0.9314 | 0.9942 | 0.9325 | 0.9310 | 0.9308 | 0.9203 |
+| XGBoost (Ensemble) | 0.9740 | 0.9991 | 0.9737 | 0.9743 | 0.9739 | 0.9697 |
 
 ## Observations
 | ML Model Name | Observation about model performance |
