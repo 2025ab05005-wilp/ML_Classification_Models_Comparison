@@ -42,8 +42,10 @@ MODEL_FILES = {
 class DatasetSplit:
     X_train: pd.DataFrame
     X_test: pd.DataFrame
+    X_val: pd.DataFrame
     y_train: np.ndarray
     y_test: np.ndarray
+    y_val: np.ndarray
     label_encoder: LabelEncoder
 
 
@@ -51,26 +53,51 @@ def load_dataset(csv_path: str) -> pd.DataFrame:
     return pd.read_csv(csv_path)
 
 
-def split_dataset(df: pd.DataFrame, test_size: float = 0.2) -> DatasetSplit:
+def split_dataset(df: pd.DataFrame, test_size: float = 0.2, val_size: float = 0.06) -> DatasetSplit:
+    """
+    Split dataset into train, test, and validation sets.
+    
+    Args:
+        df: Input dataframe
+        test_size: Proportion for test set (default 0.2)
+        val_size: Proportion for validation set (default 0.06, i.e., 6%)
+    
+    Returns:
+        DatasetSplit with train, test, and validation data
+    """
     X = df.drop(columns=[TARGET_COL])
     y = df[TARGET_COL]
 
     label_encoder = LabelEncoder()
     y_encoded = label_encoder.fit_transform(y)
 
-    X_train, X_test, y_train, y_test = train_test_split(
+    # First, split off the validation set (6% of total data)
+    X_temp, X_val, y_temp, y_val = train_test_split(
         X,
         y_encoded,
-        test_size=test_size,
+        test_size=val_size,
         random_state=RANDOM_STATE,
         stratify=y_encoded,
+    )
+
+    # Then split the remaining data into train and test
+    # Adjust test_size to maintain the original proportion relative to total data
+    adjusted_test_size = test_size / (1 - val_size)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_temp,
+        y_temp,
+        test_size=adjusted_test_size,
+        random_state=RANDOM_STATE,
+        stratify=y_temp,
     )
 
     return DatasetSplit(
         X_train=X_train,
         X_test=X_test,
+        X_val=X_val,
         y_train=y_train,
         y_test=y_test,
+        y_val=y_val,
         label_encoder=label_encoder,
     )
 
@@ -183,8 +210,9 @@ def train_models(
     df: pd.DataFrame,
     model_dir: str,
     test_size: float = 0.2,
+    val_size: float = 0.06,
 ) -> Tuple[Dict[str, Pipeline], DatasetSplit, pd.DataFrame]:
-    split = split_dataset(df, test_size=test_size)
+    split = split_dataset(df, test_size=test_size, val_size=val_size)
     num_classes = len(split.label_encoder.classes_)
 
     models = build_pipelines(split.X_train, num_classes)
@@ -203,6 +231,11 @@ def train_models(
 
     joblib.dump(split.label_encoder, os.path.join(model_dir, "label_encoder.joblib"))
     metrics_table.to_csv(os.path.join(model_dir, "metrics.csv"), index=False)
+    
+    # Save validation dataset
+    val_data = pd.DataFrame(split.X_val)
+    val_data[TARGET_COL] = split.label_encoder.inverse_transform(split.y_val)
+    val_data.to_csv(os.path.join(model_dir, "validation_data.csv"), index=False)
 
     return models, split, metrics_table
 
